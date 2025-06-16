@@ -92,7 +92,7 @@
       margin: 0 auto;
       display: block;
       background: #222;
-
+      transform: scaleX(-1); /* เพิ่มบรรทัดนี้เพื่อแก้ไขการกลับด้านของกล้อง */
     }
 
     /* Photo preview */
@@ -665,7 +665,7 @@ async function startCamera() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ 
       video: { 
-        facingMode: "environment",
+        facingMode: "user",  // เปลี่ยนจาก "environment" เป็น "user" เพื่อใช้กล้องหน้า
         width: { ideal: 1280 },
         height: { ideal: 720 }
       } 
@@ -771,7 +771,11 @@ snapBtn.addEventListener('click', () => {
   const context = canvas.getContext('2d');
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
+  context.save();
+  context.scale(-1, 1);  // เพิ่มการกลับด้านของ canvas
+  context.translate(-canvas.width, 0);  // ย้ายตำแหน่งการวาด
   context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  context.restore();
 
   const dataUrl = canvas.toDataURL('image/png');
   photo.src = dataUrl;
@@ -907,6 +911,11 @@ function endGame() {
     } else if (healthB <= 0) {
         result = 'Player A Win!';
         arena.src = 'Blue-win.png';
+        arena.style.width = '100%';
+        arena.style.height = '100%';
+    } else if (healthA === healthB) {
+        result = 'Draw!';
+        arena.src = 'Ready.png';
         arena.style.width = '100%';
         arena.style.height = '100%';
     } else {
