@@ -720,7 +720,10 @@ function showGameSection() {
 }
 
 // เริ่มต้นแสดงหน้า QR scan
-showQRSection();
+// showQRSection(); // Comment out this line
+
+// แสดงถ่ายรูป section แทน
+showPhotoSection();
 
 // สแกน QR code ด้วย html5-qrcode
 if (!html5QrCode) {
@@ -803,8 +806,11 @@ nextBtn.addEventListener('click', () => {
   if (currentPlayerIndex < players.length) {
     qrResultDiv.textContent = '';
     photo.src = '';
-    showQRSection();
-    startScanning();
+    // showQRSection(); // Comment out QR section
+    // startScanning(); // Comment out QR scanning
+    
+    // แสดงถ่ายรูป section แทน
+    showPhotoSection();
   } else {
     showGameSection();
     displayPlayersInfo();
@@ -814,8 +820,8 @@ nextBtn.addEventListener('click', () => {
 
 // แสดงข้อมูลผู้เล่น
 function displayPlayersInfo() {
-  document.getElementById('player1-qr').textContent = players[0].qrData || '-';
-  document.getElementById('player2-qr').textContent = players[1].qrData || '-';
+  document.getElementById('player1-qr').textContent = players[0].qrData || 'Player 1';
+  document.getElementById('player2-qr').textContent = players[1].qrData || 'Player 2';
 
   document.getElementById('player1-photo').src = players[0].photoDataUrl || '';
   document.getElementById('player2-photo').src = players[1].photoDataUrl || '';
